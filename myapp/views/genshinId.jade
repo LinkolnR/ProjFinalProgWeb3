@@ -1,7 +1,8 @@
 extends layout
 
 block content
-    h1 Personagens:
+    h1= personagem.name
     ul
-        each val, index in personagens 
-            li= index + ': ' + val.name
+      li= 'Visão: ' + personagem.element 
+      li= 'Arma: ' + personagem.weapon 
+      li= 'Cidade:' +personagem.nation 

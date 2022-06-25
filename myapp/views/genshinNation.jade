@@ -1,0 +1,10 @@
+extends layout
+
+block content
+    h1= 'Personagens de ' +cidade
+    ul
+        each val , index in personagensDaCidade
+            ol
+                h3= val.name 
+                li= 'Arma: ' + val.weapon 
+                li= 'Elemento:' +val.element 

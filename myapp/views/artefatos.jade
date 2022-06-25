@@ -1,0 +1,7 @@
+extends layout
+
+block content
+    h1 Artefatos:
+    ul
+        each val, index in artefatos 
+            li= index + ': ' + val

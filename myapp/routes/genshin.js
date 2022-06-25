@@ -13,7 +13,7 @@ router.get('/', async function(req, res) {
       const metodos = obj.types
       res.send(metodos);
     } catch (err) {
-      res.send(err);
+      res.router('error',{err});
     }
   });
 
@@ -24,9 +24,10 @@ router.get('/artifacts', async function(req, res, next) {
       const types = await fsPromise.readFile(TYPES_FILE_PATH, 'utf8');
       const obj = JSON.parse(types)
       const artefatos = obj.artifacts
-      res.send(artefatos);
+      res.render('artefatos',{artefatos});
     } catch (err) {
-      res.send(err);
+      res.sendStatus(404);
+      res.router('error',{err});
     }
   });
 router.get('/artifacts/:id', async function(req, res, next) {
@@ -36,9 +37,16 @@ router.get('/artifacts/:id', async function(req, res, next) {
       const types = await fsPromise.readFile(TYPES_FILE_PATH, 'utf8');
       const obj = JSON.parse(types)
       const artefatos = obj.artifacts
-      res.send(artefatos[id]);
+      if (id< artefatos.length){
+        res.send(artefatos[id]);
+      }
+      else{
+        res.sendStatus(404);
+        res.router({err});
+      }
     } catch (err) {
-      res.send(err);
+      res.render('error',{err});
+      res.sendStatus(404);
     }
 });
 // =====     CIDADES     ===== 
@@ -49,7 +57,8 @@ router.get('/nations', async function(req, res, next) {
     const cidades = obj.nations
     res.send(cidades);
   } catch (err) {
-    res.send(err);
+    res.router('error',{err});
+    res.sendStatus(404);
   }
 });
 router.get('/nations/:id', async function(req, res, next) {
@@ -59,9 +68,16 @@ router.get('/nations/:id', async function(req, res, next) {
       const types = await fsPromise.readFile(TYPES_FILE_PATH, 'utf8');
       const obj = JSON.parse(types)
       const cidades = obj.nations
-      res.send(cidades[id]);
+      if (id< cidades.length){
+        res.send(cidades[id]);
+      }
+      else{
+        res.sendStatus(404);
+        res.router({err});
+      }
     } catch (err) {
-      res.send(err);
+      res.router({err});
+      res.sendStatus(404);
     }
 });
 router.get('/nations/:id/characters', async function(req, res, next) {
@@ -84,9 +100,10 @@ router.get('/nations/:id/characters', async function(req, res, next) {
     const cidade = cidades[id]
     const personagens = obj.characters
     const personagensDaCidade = personagens.filter(personagem => filtro(personagem,cidade))
-    res.send(personagensDaCidade);
+    res.render('genshinNation',{personagensDaCidade,cidade});
   } catch (err) {
-    res.send(err);
+    res.router('error',{err});
+    res.sendStatus(404);
   }
 });
 // =====     PERSONAGENS     ===== 
@@ -100,7 +117,8 @@ router.get('/characters', async function(req, res, next) {
       const personagens = obj.characters
       res.render('genshin',{personagens});
     } catch (err) {
-      res.send(err);
+      res.router('error',{err});
+      res.sendStatus(404);
     }
   }
   else{
@@ -177,7 +195,7 @@ router.get('/characters', async function(req, res, next) {
       // console.log(param)
     } catch (err) {
       res.send('Algo Está Errado')
-      // res.send(err);
+      // res.router('error',{err});
     }
   }
 });
@@ -191,7 +209,8 @@ router.get('/characters/:id', async function(req, res, next) {
     const personagem = personagens[id]
     res.render('genshinId',{personagem});
   } catch (err) {
-    res.send(err);
+    res.router('error',{err});
+    res.sendStatus(404);
   }
 });
 router.get('/characters/:id/weapon', async function(req, res, next) {
@@ -204,7 +223,8 @@ router.get('/characters/:id/weapon', async function(req, res, next) {
     const personagem = personagens[id]
     res.send(personagem.weapon);
   } catch (err) {
-    res.send(err);
+    res.router('error',{err});
+    res.sendStatus(404);
   }
 });
 router.get('/characters/:id/name', async function(req, res, next) {
@@ -217,7 +237,8 @@ router.get('/characters/:id/name', async function(req, res, next) {
     const personagem = personagens[id]
     res.send(personagem.name);
   } catch (err) {
-    res.send(err);
+    res.router('error',{err});
+    res.sendStatus(404);
   }
 });
 router.get('/characters/:id/weapon', async function(req, res, next) {
@@ -230,7 +251,8 @@ router.get('/characters/:id/weapon', async function(req, res, next) {
     const personagem = personagens[id]
     res.send(personagem.weapon);
   } catch (err) {
-    res.send(err);
+    res.router('error',{err});
+    res.sendStatus(404);
   }
 });
 router.get('/characters/:id/element', async function(req, res, next) {
@@ -243,7 +265,8 @@ router.get('/characters/:id/element', async function(req, res, next) {
     const personagem = personagens[id]
     res.send(personagem.element);
   } catch (err) {
-    res.send(err);
+    res.router('error',{err});
+    res.sendStatus(404);
   }
 });
 router.get('/characters/:id/nation', async function(req, res, next) {
@@ -256,7 +279,8 @@ router.get('/characters/:id/nation', async function(req, res, next) {
     const personagem = personagens[id]
     res.send(personagem.nation);
   } catch (err) {
-    res.send(err);
+    res.router('error',{err});
+    res.sendStatus(404);
   }
 });
 
@@ -324,7 +348,8 @@ router.delete('/nations/:id', async function(req, res, next) {
     const nationsAtualizado = await fsPromise.readFile(TYPES_FILE_PATH, 'utf8');
     res.send(nationsAtualizado.nations);
   } catch (err) {
-    res.send(err);
+    res.router('error',{err});
+    res.sendStatus(404);
   }
 });
 // =====     ARTEFATOS     ===== 
@@ -349,7 +374,8 @@ router.delete('/artifacts/:id', async function(req, res, next) {
     const artifactsAtualizado = await fsPromise.readFile(TYPES_FILE_PATH, 'utf8');
     res.send(artifactsAtualizado.artifacts);
   } catch (err) {
-    res.send(err);
+    res.router('error',{err});
+    res.sendStatus(404);
   }
 });
 // =====     PERSONAGENS     ===== 
@@ -374,7 +400,8 @@ router.delete('/characters/:id', async function(req, res, next) {
     const charactersAtualizado = await fsPromise.readFile(TYPES_FILE_PATH, 'utf8');
     res.send(charactersAtualizado.characters);
   } catch (err) {
-    res.send(err);
+    res.router('error',{err});
+    res.sendStatus(404);
   }
 });
 
@@ -394,7 +421,8 @@ router.put('/nations/:id', async function(req, res, next) {
     const nationsAtualizado = await fsPromise.readFile(TYPES_FILE_PATH, 'utf8');
     res.send(nationsAtualizado.nations);
   } catch (err) {
-    res.send(err);
+    res.router('error',{err});
+    res.sendStatus(404);
   }
 });
 // =====     ARTEFATOS     ===== 
@@ -412,7 +440,8 @@ router.put('/artifacts/:id', async function(req, res, next) {
     const artifactsAtualizado = await fsPromise.readFile(TYPES_FILE_PATH, 'utf8');
     res.send(artifactsAtualizado.artifacts);
   } catch (err) {
-    res.send(err);
+    res.router('error',{err});
+    res.sendStatus(404);
   }
 });
 // =====     PERSONAGENS     ===== 
@@ -430,7 +459,8 @@ router.put('/characters/:id/name', async function(req, res, next) {
     const charactersAtualizado = await fsPromise.readFile(TYPES_FILE_PATH, 'utf8');
     res.send(charactersAtualizado.characters);
   } catch (err) {
-    res.send(err);
+    res.router('error',{err});
+    res.sendStatus(404);
   }
 });
 
@@ -448,7 +478,8 @@ router.put('/characters/:id/weapon', async function(req, res, next) {
     const charactersAtualizado = await fsPromise.readFile(TYPES_FILE_PATH, 'utf8');
     res.send(charactersAtualizado.characters);
   } catch (err) {
-    res.send(err);
+    res.router('error',{err});
+    res.sendStatus(404);
   }
 });
 
@@ -466,7 +497,8 @@ router.put('/characters/:id/nation', async function(req, res, next) {
     const charactersAtualizado = await fsPromise.readFile(TYPES_FILE_PATH, 'utf8');
     res.send(charactersAtualizado.characters);
   } catch (err) {
-    res.send(err);
+    res.router('error',{err});
+    res.sendStatus(404);
   }
 });
 
@@ -484,7 +516,8 @@ router.put('/characters/:id/element', async function(req, res, next) {
     const charactersAtualizado = await fsPromise.readFile(TYPES_FILE_PATH, 'utf8');
     res.send(charactersAtualizado.characters);
   } catch (err) {
-    res.send(err);
+    res.router('error',{err});
+    res.sendStatus(404);
   }
 });
 module.exports = router;
