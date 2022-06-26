@@ -1,0 +1,33 @@
+GETTERS (GET)
+/
+/artifacts
+/artifacts/:id 
+/nations 
+/nations/:id 
+/nations/:id/characters 
+/characters
+/characters/:id 
+/characters/:id/weapon
+/characters/:id/name
+/characters/:id/element
+/characters/:id/nation
+
+POSTS (POST)
+/artifacts 
+/characters 
+/nations
+
+DELETES (DELETE)
+/nations/:id
+/artifacts/:id
+/characters/:id
+
+PUTS (PUT)
+/nations/:id
+/artifacts/:id
+/characters/:id/name
+/characters/:id/weapon
+/characters/:id/nation
+/characters/:id/element
+
+

@@ -237,19 +237,6 @@ router.get('/characters/:id/name', async function(req, res, next) {
     res.send(err);
   }
 });
-router.get('/characters/:id/weapon', async function(req, res, next) {
-  const {id} = req.params
-  parseInt(id,10)
-  try {
-    const types = await fsPromise.readFile(TYPES_FILE_PATH, 'utf8');
-    const obj = JSON.parse(types)
-    const personagens = obj.characters
-    const personagem = personagens[id]
-    res.send(personagem.weapon);
-  } catch (err) {
-    res.send(err);
-  }
-});
 router.get('/characters/:id/element', async function(req, res, next) {
   const {id} = req.params
   parseInt(id,10)
